@@ -1,8 +1,15 @@
 services:
-  db:
-    image: postgres
-    container_name: lab-db
+  storage:
+    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    command: server /data --console-address ":9001"
     ports:
-      - "5432:5432"
+      - "9000:9000"
+      - "9001:9001"
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD} 
+      MINIO_ROOT_USER: ${STORAGE_USER}
+      MINIO_ROOT_PASSWORD: ${STORAGE_PASSWORD}
+    volumes:
+      - storage_data:/data
+
+volumes:
+  storage_data:
